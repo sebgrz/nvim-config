@@ -1,0 +1,30 @@
+[submodule "cmp-nvim-lsp"]
+	path = cmp-nvim-lsp
+	url = https://github.com/hrsh7th/cmp-nvim-lsp.git
+[submodule "cmp-vsnip"]
+	path = cmp-vsnip
+	url = https://github.com/hrsh7th/cmp-vsnip.git
+[submodule "nvim-cmp"]
+	path = nvim-cmp
+	url = https://github.com/hrsh7th/nvim-cmp.git
+[submodule "nvim-lspconfig"]
+	path = nvim-lspconfig
+	url = https://github.com/neovim/nvim-lspconfig.git
+[submodule "plenary.nvim"]
+	path = plenary.nvim
+	url = https://github.com/nvim-lua/plenary.nvim.git
+[submodule "telescope.nvim"]
+	path = telescope.nvim
+	url = https://github.com/nvim-telescope/telescope.nvim.git
+[submodule "nvim-tree.lua"]
+	path = nvim-tree.lua
+	url = https://github.com/nvim-tree/nvim-tree.lua.git
+[submodule "tokyonight.nvim"]
+	path = tokyonight.nvim
+	url = https://github.com/folke/tokyonight.nvim.git
+[submodule "vim-polyglot"]
+	path = vim-polyglot
+	url = https://github.com/sheerun/vim-polyglot.git
+[submodule "vim-vsnip"]
+	path = vim-vsnip
+	url = https://github.com/hrsh7th/vim-vsnip.git
