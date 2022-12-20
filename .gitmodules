@@ -28,3 +28,16 @@
 [submodule "vim-vsnip"]
 	path = vim-vsnip
 	url = https://github.com/hrsh7th/vim-vsnip.git
+[submodule "tools"]
+	path = tools
+	url = https://github.com/golang/tools.git
+[submodule "TypeScript"]
+	path = TypeScript
+	url = https://github.com/microsoft/TypeScript.git
+[submodule "typescript-language-server"]
+	path = typescript-language-server
+	url = https://github.com/typescript-language-server/typescript-language-server.git
+[submodule "yarn"]
+	path = yarn
+	url = https://github.com/yarnpkg/yarn.git
+	branch = 1.22-stable

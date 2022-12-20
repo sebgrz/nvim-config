@@ -66,10 +66,17 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
 end
 
+-- Typescript lsp integration
+lspconfig.tsserver.setup {
+  on_attach = on_attach,
+  cmd = {"typescript-language-server", "--stdio"},
+  filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
+  root_dir = util.root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git"),
+}
 -- Golang lsp integration
 lspconfig.gopls.setup {
   on_attach = on_attach,
-  cmd = {"gopls", "serve"},
+  cmd = {vim.env.HOME.."/.local/share/nvim/lsp-runtime/gopls", "serve"},
   filetypes = {"go", "gomod"},
   root_dir = util.root_pattern("go.work", "go.mod", ".git"),
   settings = {

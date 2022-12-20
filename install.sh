@@ -9,10 +9,11 @@ rm nvim-linux64.deb
 mkdir -p ~/.config/nvim
 cp init.lua ~/.config/nvim/
 
-git submodule update --init
+git submodule update --init --depth 1
 
 # Copy plugins into default plugin neovim location
-PLUGINS_DIR=~/.local/share/nvim/site/pack
+LOCAL_NVIM=~/.local/share/nvim
+PLUGINS_DIR=$LOCAL_NVIM/site/pack
 mkdir -p $PLUGINS_DIR/cmp-nvim-lsp/opt/cmp-nvim-lsp
 mkdir -p $PLUGINS_DIR/cmp-vsnip/opt/cmp-vsnip
 mkdir -p $PLUGINS_DIR/nvim-cmp/opt/nvim-cmp
@@ -35,3 +36,21 @@ cp -r nvim-tree.lua/* $PLUGINS_DIR/nvim-tree/opt/nvim-tree/
 cp -r tokyonight.nvim/* $PLUGINS_DIR/tokyonight/opt/tokyonight/
 cp -r vim-polyglot/* $PLUGINS_DIR/vim-polyglot/opt/vim-polyglot/
 cp -r vim-vsnip/* $PLUGINS_DIR/vim-vsnip/opt/vim-vsnip/
+
+# Install lsp runtimes
+mkdir -p $LOCAL_NVIM/lsp-runtime
+
+# Golang lsp
+cd tools/gopls && go build -v -o gopls .
+mv gopls $LOCAL_NVIM/lsp-runtime/
+
+# Typescript & javascript
+cd ../../TypeScript && npm install && npm pack
+npm install --global typescript-5.0.0.tgz
+
+cd ../yarn && npm install --force && npm run build && npm pack
+npm install --global yarn-1.22.19.tgz
+
+cd ../typescript-language-server && npm install && npm pack
+npm install --global typescript-language-server-2.2.0.tgz
+
