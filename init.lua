@@ -15,7 +15,6 @@ vim.opt.termguicolors = true
 
 vim.cmd('set textwidth=1000')
 vim.cmd('set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.idea/*,*/.DS_Store,.git')
-vim.cmd('set termguicolors')
 vim.cmd('set mouse=a')
 vim.cmd('set encoding=UTF-8')
 vim.cmd('set ff=unix')
@@ -26,7 +25,7 @@ vim.cmd('set cursorline')
 vim.cmd('set mouse=a')
 vim.cmd('set clipboard=unnamedplus')
 vim.cmd('set completeopt=menu,menuone,noselect')
-vim.cmd('colorscheme tokyonight-storm')
+vim.cmd('colorscheme tokyonight-moon')
 
 vim.api.nvim_set_keymap("n", "<c-p>", ":Telescope find_files hidden=true no_ignore=true<cr>", { noremap=true })
 vim.api.nvim_set_keymap("n", "<leader>f", ":Telescope live_grep hidden=true no_ignore=true<cr>", { noremap=true })
@@ -54,6 +53,7 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
   vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
   vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+  vim.keymap.set('n', 'gl', vim.diagnostic.open_float, bufopts)
   vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
   vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
   vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
@@ -104,7 +104,7 @@ cmp.setup({
     ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
     ["<C-e>"] = cmp.mapping.close(),
     ["<CR>"] = cmp.mapping.confirm({
-      behavior = cmp.ConfirmBehavior.Insert,
+      behavior = cmp.ConfirmBehavior.Replace,
       select = true,
     })
   },
