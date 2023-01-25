@@ -54,3 +54,6 @@ npm install --global yarn-1.22.19.tgz
 cd ../typescript-language-server && npm install && npm pack
 npm install --global typescript-language-server-2.2.0.tgz
 
+# Rust
+cd ../rust-analyzer && cargo build --release
+mv target/release/rust-analyzer $LOCAL_NVIM/lsp-runtime/

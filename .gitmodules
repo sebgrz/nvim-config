@@ -41,3 +41,6 @@
 	path = yarn
 	url = https://github.com/yarnpkg/yarn.git
 	branch = 1.22-stable
+[submodule "rust-analyzer"]
+	path = rust-analyzer
+	url = https://github.com/rust-lang/rust-analyzer.git

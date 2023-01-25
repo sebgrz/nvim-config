@@ -89,6 +89,17 @@ lspconfig.gopls.setup {
   },
 }
 
+-- Rust lsp integration
+lspconfig.gopls.setup {
+  on_attach = on_attach,
+  cmd = {vim.env.HOME.."/.local/share/nvim/lsp-runtime/rust-analyzer"},
+  filetypes = {"rust"},
+  root_dir = util.root_pattern("Cargo.toml", "rust-project.json"),
+  settings = {
+    ["rust-analyzer"] = {},
+  },
+}
+
 local cmp = require('cmp')
 cmp.setup({
   snippet = {
