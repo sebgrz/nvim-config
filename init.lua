@@ -90,7 +90,7 @@ lspconfig.gopls.setup {
 }
 
 -- Rust lsp integration
-lspconfig.gopls.setup {
+lspconfig.rust_analyzer.setup {
   on_attach = on_attach,
   cmd = {vim.env.HOME.."/.local/share/nvim/lsp-runtime/rust-analyzer"},
   filetypes = {"rust"},
