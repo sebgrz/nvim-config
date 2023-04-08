@@ -37,6 +37,10 @@ cp -r tokyonight.nvim/* $PLUGINS_DIR/tokyonight/opt/tokyonight/
 cp -r vim-polyglot/* $PLUGINS_DIR/vim-polyglot/opt/vim-polyglot/
 cp -r vim-vsnip/* $PLUGINS_DIR/vim-vsnip/opt/vim-vsnip/
 
+# Setup yarn
+corepack enable
+corepack prepare yarn@3.5.0 --activate
+
 # Install lsp runtimes
 mkdir -p $LOCAL_NVIM/lsp-runtime
 
@@ -46,13 +50,10 @@ mv gopls $LOCAL_NVIM/lsp-runtime/
 
 # Typescript & javascript
 cd ../../TypeScript && npm install && npm pack
-npm install --global typescript-5.0.0.tgz
+npm install --global typescript-5.0.4.tgz
 
-cd ../yarn && npm install --force && npm run build && npm pack
-npm install --global yarn-1.22.19.tgz
-
-cd ../typescript-language-server && npm install && npm pack
-npm install --global typescript-language-server-2.2.0.tgz
+cd ../typescript-language-server && yarn && yarn build && yarn pack
+npm install --global package.tgz
 
 # Rust
 cd ../rust-analyzer && cargo build --release
