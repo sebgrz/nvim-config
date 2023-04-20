@@ -100,6 +100,18 @@ lspconfig.rust_analyzer.setup {
   },
 }
 
+-- CSS integration
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+lspconfig.cssls.setup {
+  capabilities = capabilities,
+  on_attach = on_attach,
+  cmd = {"css-language-server", "--stdio"},
+  filetypes = { "css", "scss", "less" },
+  root_dir = util.root_pattern("package.json", ".git"),
+}
+
 local cmp = require('cmp')
 cmp.setup({
   snippet = {

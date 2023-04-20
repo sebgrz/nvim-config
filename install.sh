@@ -58,3 +58,9 @@ npm install --global package.tgz
 # Rust
 cd ../rust-analyzer && cargo build --release
 mv target/release/rust-analyzer $LOCAL_NVIM/lsp-runtime/
+
+# CSS
+cd ..
+curl -L https://github.com/sebgrz/language-servers/releases/latest/download/css-language-server-0.0.21.tgz --output css-language-server.tgz
+npm install --global css-language-server.tgz
+rm css-language-server
