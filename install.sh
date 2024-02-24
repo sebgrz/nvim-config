@@ -1,10 +1,31 @@
 #!/bin/bash
 
-# Download and install neovim 8
-curl -LJO https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.deb
-dpkg --install nvim-linux64.deb
-rm nvim-linux64.deb
+MODE=$1
 
+# Download and install neovim 8
+install_nvim() {
+	local VERSION="v0.9.5"
+	local REPO="https://github.com/neovim/neovim"
+	local DIR="neovim"
+	echo "neovim $VERSION - installation"
+	echo "install dependencies"
+	apt install ninja-build gettext cmake unzip curl file -y
+	rm -rf $DIR
+	git clone --depth 1 --branch $VERSION $REPO $DIRG
+	echo "start building"
+	(cd $DIR && make CMAKE_BUILD_TYPE=RelWithDebInfo)
+	echo "start packaging and installation"
+	(cd $DIR/build && cpack -G DEB && dpkg -i nvim-linux64.deb)
+	rm -rf $DIR
+	echo "END installation"
+}
+
+case $MODE in
+	"neovim"*)
+		install_nvim
+		;;
+esac
+exit 1
 # Prepare neovim config
 mkdir -p ~/.config/nvim
 cp init.lua ~/.config/nvim/
