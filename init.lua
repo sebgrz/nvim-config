@@ -47,6 +47,11 @@ local on_attach = function(client, bufnr)
   -- Enable completion triggered by <c-x><c-o>
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
+  -- Inlay hints
+  if client.server_capabilities.inlayHintProvider then
+    vim.lsp.inlay_hint.enable(true, { bufnr })
+  end
+
   -- Mappings.
   local bufopts = { noremap=true, silent=true, buffer=bufnr }
   vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
@@ -85,6 +90,15 @@ lspconfig.gopls.setup {
         unusedparams = true,
       },
       staticcheck = true,
+      ["ui.inlayhint.hints"] = {
+        assignVariableTypes = true,
+        compositeLiteralFields = true,
+        compositeLiteralTypes = true,
+        constantValues = true,
+        parameterNames = true,
+        rangeVariableType = true,
+        functionTypeParameters = true
+      },
     },
   },
 }
@@ -96,7 +110,15 @@ lspconfig.rust_analyzer.setup {
   filetypes = {"rust"},
   root_dir = util.root_pattern("Cargo.toml", "rust-project.json"),
   settings = {
-    ["rust-analyzer"] = {},
+    ["rust-analyzer"] = {
+      diagnostics = {
+        enable = true
+      },
+      inlayHints = {
+        enable = true,
+        showParameterNames = true,
+      },
+    },
   },
 }
 
