@@ -4,7 +4,7 @@ MODE=$1
 
 # Download and install neovim 0.10.0
 install_nvim() {
-	local VERSION="v0.10.0"
+	local VERSION="v0.12.2"
 	local REPO="https://github.com/neovim/neovim"
 	local DIR="neovim"
 	echo "neovim $VERSION - installation"

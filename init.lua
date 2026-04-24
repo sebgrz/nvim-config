@@ -27,6 +27,7 @@ vim.cmd('set clipboard=unnamedplus')
 vim.cmd('set completeopt=menu,menuone,noselect')
 vim.cmd('colorscheme tokyonight-moon')
 
+vim.api.nvim_set_keymap("t", "<Leader><ESC>", "<C-\\><C-n>", {noremap = true})
 vim.api.nvim_set_keymap("n", "<c-p>", ":Telescope find_files hidden=true no_ignore=true<cr>", { noremap=true })
 vim.api.nvim_set_keymap("n", "<leader>f", ":Telescope live_grep hidden=true no_ignore=true<cr>", { noremap=true })
 vim.api.nvim_set_keymap("n", "<leader>fb", ":Telescope buffers<cr>", { noremap=true })
@@ -40,13 +41,16 @@ vim.api.nvim_set_keymap("n", "ff", ":resize 100 <CR> <BAR> :vertical resize 220<
 vim.api.nvim_set_keymap("n", "fm", "<C-w>=", { noremap=true })
 vim.api.nvim_create_user_command("Format", function() vim.lsp.buf.format { async = true } end, { nargs = 0 })
 
-lspconfig = require "lspconfig"
 util = require "lspconfig/util"
 
 local on_attach = function(client, bufnr)
   -- Enable completion triggered by <c-x><c-o>
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
+  
+  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics,
+    { virtual_text = false }
+  )
   -- Inlay hints
   if client.server_capabilities.inlayHintProvider then
     vim.lsp.inlay_hint.enable(true, { bufnr })
@@ -72,18 +76,18 @@ local on_attach = function(client, bufnr)
 end
 
 -- Typescript lsp integration
-lspconfig.tsserver.setup {
+vim.lsp.config("tsserver", {
   on_attach = on_attach,
   cmd = {"typescript-language-server", "--stdio"},
   filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
-  root_dir = util.root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git"),
-}
+  root_markers = { "package.json", "tsconfig.json", "jsconfig.json", ".git" },
+})
 -- Golang lsp integration
-lspconfig.gopls.setup {
+vim.lsp.config("gopls", {
   on_attach = on_attach,
   cmd = {vim.env.HOME.."/.local/share/nvim/lsp-runtime/gopls", "serve"},
   filetypes = {"go", "gomod"},
-  root_dir = util.root_pattern("go.work", "go.mod", ".git"),
+  root_markers = { "go.work", "go.mod", ".git" },
   settings = {
     gopls = {
       analyses = {
@@ -91,7 +95,7 @@ lspconfig.gopls.setup {
       },
       staticcheck = true,
       ["ui.inlayhint.hints"] = {
-        assignVariableTypes = true,
+        assignVariableTypes = true,  
         compositeLiteralFields = true,
         compositeLiteralTypes = true,
         constantValues = true,
@@ -101,18 +105,21 @@ lspconfig.gopls.setup {
       },
     },
   },
-}
+})
 
 -- Rust lsp integration
-lspconfig.rust_analyzer.setup {
+vim.lsp.config("rust_analyzer", {
   on_attach = on_attach,
   cmd = {vim.env.HOME.."/.local/share/nvim/lsp-runtime/rust-analyzer"},
   filetypes = {"rust"},
-  root_dir = util.root_pattern("Cargo.toml", "rust-project.json"),
+  root_markers = { "Cargo.toml", "rust-project.json" },
   settings = {
     ["rust-analyzer"] = {
+      primeCaches = {
+        enable = false
+      },
       diagnostics = {
-        enable = true
+        enable = false
       },
       inlayHints = {
         enable = true,
@@ -120,19 +127,38 @@ lspconfig.rust_analyzer.setup {
       },
     },
   },
-}
+})
 
+-- C integration
+vim.lsp.config("ccls", {
+  on_attach = on_attach,
+  cmd = {vim.env.HOME.."/.local/share/nvim/lsp-runtime/ccls"},
+  init_options = {
+    compilationDatabaseDirectory = "build";
+    index = {
+      threads = 0;
+    };
+    clang = {
+      excludeArgs = { "-frounding-math"} ;
+    };
+  }
+})
+
+vim.lsp.enable('tsserver')
+vim.lsp.enable('gopls')
+vim.lsp.enable('rust_analyzer')
+vim.lsp.enable('ccls')
 -- CSS integration
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-lspconfig.cssls.setup {
+vim.lsp.config("cssls", {
   capabilities = capabilities,
   on_attach = on_attach,
   cmd = {"css-language-server", "--stdio"},
   filetypes = { "css", "scss", "less" },
   root_dir = util.root_pattern("package.json", ".git"),
-}
+})
 
 local cmp = require('cmp')
 cmp.setup({
